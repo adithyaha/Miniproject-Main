@@ -86,12 +86,12 @@
       margin-left: 15px;
     }
   </style>
- <script>
+<script>
   function validateForm() {
     var password = document.getElementById("password").value;
     var rePassword = document.getElementById("re-password").value;
     var errorMessage = document.getElementById("error-message");
-    
+
     if (password !== rePassword) {
       errorMessage.innerHTML = "Passwords do not match.";
       errorMessage.style.display = "block";
@@ -104,19 +104,12 @@
   function redirectToLogin() {
     window.location.href = "login.html";
   }
-
-  function handleFormSubmission(event) {
-    event.preventDefault();
-    if (validateForm()) {
-      redirectToLogin();
-    }
-  }
 </script>
 </head>
 <body>
 <div class="container">
   <h2>Signup</h2>
-  <form action="process_signup.php" method="POST" onsubmit="handleFormSubmission(event);">
+  <form action="process_signup.php" method="POST">
     <div class="input-field">
       <label for="username">Username:</label>
       <input type="text" id="username" name="username" required>
@@ -146,8 +139,8 @@
     </div>
 
     <div class="button-container">
-      <button type="submit" formaction="login.html" class="submit-button">Login</button>
-      <input type="submit" value="Sign Up" class="submit-button">
+      <a href="login.html" class="submit-button">Login</a>
+      <input type="submit" value="Sign Up" class="submit-button" onclick="return validateForm();">
     </div>
   </form>
 
