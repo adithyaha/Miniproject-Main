@@ -86,64 +86,72 @@
       margin-left: 15px;
     }
   </style>
-  <script>
-    function validateForm() {
-      var password = document.getElementById("password").value;
-      var rePassword = document.getElementById("re-password").value;
-      var errorMessage = document.getElementById("error-message");
-      
-      if (password !== rePassword) {
-        errorMessage.innerHTML = "Passwords do not match.";
-        errorMessage.style.display = "block";
-        return false;
-      }
-      errorMessage.style.display = "none";
-      return true;
+ <script>
+  function validateForm() {
+    var password = document.getElementById("password").value;
+    var rePassword = document.getElementById("re-password").value;
+    var errorMessage = document.getElementById("error-message");
+    
+    if (password !== rePassword) {
+      errorMessage.innerHTML = "Passwords do not match.";
+      errorMessage.style.display = "block";
+      return false;
     }
-  </script>
+    errorMessage.style.display = "none";
+    return true;
+  }
+
+  function redirectToLogin() {
+    window.location.href = "login.html";
+  }
+
+  function handleFormSubmission(event) {
+    event.preventDefault();
+    if (validateForm()) {
+      redirectToLogin();
+    }
+  }
+</script>
 </head>
 <body>
-  <div class="container">
-    <h2>Signup</h2>
-    <form action="process_signup.php" method="POST" onsubmit="return validateForm();">
-      <div class="input-field">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
-      </div>
+<div class="container">
+  <h2>Signup</h2>
+  <form action="process_signup.php" method="POST" onsubmit="handleFormSubmission(event);">
+    <div class="input-field">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" required>
+    </div>
 
-      <div class="input-field">
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-      </div>
+    <div class="input-field">
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+    </div>
 
-      <div class="input-field">
-        <label for="re-password">Re-Password:</label>
-        <input type="password" id="re-password" name="re-password" required>
-      </div>
+    <div class="input-field">
+      <label for="re-password">Re-Password:</label>
+      <input type="password" id="re-password" name="re-password" required>
+    </div>
 
-      <div class="input-field">
-        <label for="gender">Gender:</label>
-        <select id="gender" name="gender">
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-        </select>
-      </div>
+    <div class="input-field">
+      <label for="gender">Gender:</label>
+      <select id="gender" name="gender">
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select>
+    </div>
 
-      <div class="input-field">
-        <label for="dob">Date of Birth:</label>
-        <input type="date" id="dob" name="dob" required>
-      </div>
+    <div class="input-field">
+      <label for="dob">Date of Birth:</label>
+      <input type="date" id="dob" name="dob" required>
+    </div>
 
-      <div class="button-container">
-        <form action="process_login.php" method="POST">
-          <input type="submit" value="Login" class="submit-button">
-        </form>
+    <div class="button-container">
+      <button type="submit" formaction="login.html" class="submit-button">Login</button>
+      <input type="submit" value="Sign Up" class="submit-button">
+    </div>
+  </form>
 
-        <input type="submit" value="Sign Up" class="submit-button">
-      </div>
-    </form>
-
-    <p id="error-message" class="error-message"></p>
-  </div>
+  <p id="error-message" class="error-message"></p>
+</div>
 </body>
 </html>
