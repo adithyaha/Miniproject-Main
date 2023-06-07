@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mental Health Management App - Diary</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <h1>Daily Diary</h1>
+    <div class="input-section">
+      <label for="todayEntry" id="todayEntry-label">Today's Diary Entry:</label>
+      <textarea id="todayEntry" rows="4" placeholder="Enter your private notes here"></textarea>
+      <button id="privateBtn">Make Private</button>
+    </div>
+    <div class="button-section">
+      <button id="submitBtn">Submit</button>
+      <button id="summarizeBtn" class="summarize-button">Summarize!</button>
+    </div>
+  </div>
+
+  <!-- Popup for entering start date -->
+  <div id="popup" class="popup">
+    <div id="popupContent" class="popup-content">
+      <h2>Start Date</h2>
+      <form id="popupForm" class="popup-form">
+        <div class="form-group">
+          <label for="startDate">Select Start Date:</label>
+          <input type="date" id="startDate" required>
+        </div>
+        <div class="button-section">
+          <button type="submit">Submit</button>
+          <button id="closePopupBtn" type="button">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Function to handle form submission
+    function handleSubmit(event) {
+      event.preventDefault();
+
+      // Retrieve form data
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      // Perform form validation and login process
+      if (validateForm(email, password)) {
+        // Perform login logic here
+        console.log('Login successful');
+        // Redirect to another page or perform other actions
+      }
+    }
+
+    // Function to validate form inputs
+    function validateForm(email, password) {
+      // Perform validation here
+      // Example: Check if email and password meet certain criteria
+
+      if (!email || !password) {
+        alert('Please enter your email and password');
+        return false;
+      }
+
+      return true;
+    }
+
+    // Attach event listener to login form
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+      loginForm.addEventListener('submit', handleSubmit);
+    }
+
+    // Function to handle private mode button click
+    function handlePrivateButtonClick() {
+      const body = document.body;
+      const todayEntry = document.getElementById('todayEntry');
+      body.classList.toggle('private-mode');
+      const button = document.getElementById('privateBtn');
+      const isPrivateMode = body.classList.contains('private-mode');
+      button.textContent = isPrivateMode ? 'Disable Private Mode' : 'Make Private';
+      toggleSummarizeButtonVisibility();
+      todayEntry.placeholder = isPrivateMode ? 'Enter your private notes here' : '';
+    }
+
+
+    // Attach event listener to the private button
+    const privateBtn = document.getElementById('privateBtn');
+    if (privateBtn) {
+      privateBtn.addEventListener('click', handlePrivateButtonClick);
+    }
+
+    // Function to handle the popup form submission
+    function handlePopupSubmit(event) {
+      event.preventDefault();
+      const startDate = document.getElementById('startDate').value;
+      console.log('Start Date:', startDate);
+      // You can perform further actions with the entered start date
+      // For example, store it in a variable or make an API call
+    }
+
+    // Attach event listener to the popup form
+    const popupForm = document.getElementById('popupForm');
+    if (popupForm) {
+      popupForm.addEventListener('submit', handlePopupSubmit);
+    }
+
+    // Function to show the popup
+    function showPopup() {
+      const popup = document.getElementById('popup');
+      if (popup) {
+        popup.classList.add('show');
+        setTimeout(() => {
+          const popupContent = document.getElementById('popupContent');
+          if (popupContent) {
+            popupContent.classList.add('show');
+          }
+        }, 100);
+      }
+    }
+
+    // Function to close the popup
+    function closePopup() {
+      const popupContent = document.getElementById('popupContent');
+      if (popupContent) {
+        popupContent.classList.remove('show');
+        setTimeout(() => {
+          const popup = document.getElementById('popup');
+          if (popup) {
+            popup.classList.remove('show');
+          }
+        }, 300);
+      }
+    }
+
+    // Attach event listener to show popup button
+    const summarizeBtn = document.getElementById('summarizeBtn');
+    if (summarizeBtn) {
+      summarizeBtn.addEventListener('click', showPopup);
+    }
+
+    // Attach event listener to close popup button
+    const closePopupBtn = document.getElementById('closePopupBtn');
+    if (closePopupBtn) {
+      closePopupBtn.addEventListener('click', closePopup);
+    }
+
+    // Function to toggle the visibility of the summarize button
+    function toggleSummarizeButtonVisibility() {
+      const body = document.body;
+      const summarizeBtn = document.getElementById('summarizeBtn');
+      const isPrivateMode = body.classList.contains('private-mode');
+      if (isPrivateMode) {
+        summarizeBtn.style.display = 'none';
+      } else {
+        summarizeBtn.style.display = 'inline-block';
+      }
+    }
+
+    // Call the toggleSummarizeButtonVisibility function initially
+    toggleSummarizeButtonVisibility();
+  </script>
+</body>
+</html>

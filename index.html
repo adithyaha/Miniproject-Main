@@ -1,0 +1,236 @@
+<!DOCTYPE HTML>
+
+
+<html>
+	<head>
+		<title>Mental Health Management</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="script" href = '#' defer/>
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<style>
+			#cameraOverlay {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background-color: rgba(0, 0, 0, 0.8);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				z-index: 9999;
+			}
+	
+			#cameraVideo {
+				width: 100%;
+				height: auto;
+			}
+	
+			#cameraOverlay button {
+				padding: 1rem 2rem;
+				font-size: 1.5rem;
+				background-color: #ffffff;
+				border: none;
+				border-radius: 4px;
+				cursor: pointer;
+			}
+			</style>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<button class="logo" onclick="captureImage()">
+							<!-- <span class="icon">SMILE!</span> -->
+							<img class="icon" src="images/camera.svg"></img>
+						</button>
+						<div class="content">
+							<div class="inner">
+								<h1>Thought for the day</h1>
+								<p id="random-quote"></p>
+								<!-- <p>A fully responsive site template designed by <a href="https://html5up.net">HTML5 UP</a> and released<br />
+								for free under the <a href="https://html5up.net/license">Creative Commons</a> license.</p> -->
+							</div>
+						</div>
+						<nav>
+							<ul>
+								<li><a href="#intro">Intro</a></li>
+								<li><a href="#notes">Notes</a></li>
+								<li><a href="#about">About</a></li>
+								<li><a href="#contact">Contact</a></li>
+								<!--<li><a href="#elements">Elements</a></li>-->
+							</ul>
+						</nav>
+					</header>
+
+				<!-- camera overlay  -->
+					<div id="cameraOverlay" style="display: none;">
+						<video id="cameraVideo" autoplay></video>
+						<button onclick="captureImage()">Capture</button>
+					</div>
+
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Intro -->
+							<article id="intro">
+								<h2 class="major">Intro</h2>
+								<span class="image main"><img src="images/pic01.jpg" alt="" /></span>
+								<p>Aenean ornare velit lacus, ac varius enim ullamcorper eu. Proin aliquam facilisis ante interdum congue. Integer mollis, nisl amet convallis, porttitor magna ullamcorper, amet egestas mauris. Ut magna finibus nisi nec lacinia. Nam maximus erat id euismod egestas. By the way, check out my <a href="#notes">awesome notes</a>.</p>
+								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis dapibus rutrum facilisis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Etiam tristique libero eu nibh porttitor fermentum. Nullam venenatis erat id vehicula viverra. Nunc ultrices eros ut ultricies condimentum. Mauris risus lacus, blandit sit amet venenatis non, bibendum vitae dolor. Nunc lorem mauris, fringilla in aliquam at, euismod in lectus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In non lorem sit amet elit placerat maximus. Pellentesque aliquam maximus risus, vel sed vehicula.</p>
+							</article>
+
+						<!-- notes -->
+							<article id="notes">
+								<h2 class="major">notes</h2>
+								<form method="post" action="#">
+									<div class="fields">
+										<div class="field">
+											<label for="message">Put your thoughts down!</label>
+											<textarea name="message" id="message" rows="4"></textarea>
+										</div>
+
+										<div class="field">
+											<label for="message">Enter Your Private Notes Here:</label>
+											<textarea name="message" id="message" rows="4"></textarea>
+										</div>
+									</div>
+
+									<ul class="actions">
+										<li><input type="submit" value="Summarize" class="primary" /></li>
+										<li><input type="reset" value="start Date" /></li>
+									</ul>
+								</form>
+							</article>
+
+						<!-- About -->
+							<article id="about">
+								<h2 class="major">About</h2>
+								<span class="image main"><img src="images/pic03.jpg" alt="" /></span>
+								<p>Lorem ipsum dolor sit amet, consectetur et adipiscing elit. Praesent eleifend dignissim arcu, at eleifend sapien imperdiet ac. Aliquam erat volutpat. Praesent urna nisi, fringila lorem et vehicula lacinia quam. Integer sollicitudin mauris nec lorem luctus ultrices. Aliquam libero et malesuada fames ac ante ipsum primis in faucibus. Cras viverra ligula sit amet ex mollis mattis lorem ipsum dolor sit amet.</p>
+							</article>
+
+						<!-- Contact -->
+							<article id="contact">
+								<h2 class="major">Contact</h2>
+								<form method="post" action="#">
+									<div class="fields">
+										<div class="field half">
+											<label for="name">Name</label>
+											<input type="text" name="name" id="name" />
+										</div>
+										<div class="field half">
+											<label for="email">Email</label>
+											<input type="text" name="email" id="email" />
+										</div>
+										<div class="field">
+											<label for="message">Message</label>
+											<textarea name="message" id="message" rows="4"></textarea>
+										</div>
+									</div>
+									<ul class="actions">
+										<li><input type="submit" value="Send Message" class="primary" /></li>
+										<li><input type="reset" value="Reset" /></li>
+									</ul>
+								</form>
+								<ul class="icons">
+									<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+									<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+									<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+									<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+								</ul>
+							</article>					</div>
+
+		
+
+			</div>
+
+		<!-- BG -->
+			<div id="bg"></div>
+
+		<!-- Scripts -->
+		<script>
+				// Random Thought
+		window.addEventListener('DOMContentLoaded', () => {
+			fetch("quotes/quotes.txt")
+				.then(response => response.text())
+				.then(data => {
+					const thoughts = data.split('\n').filter(thought => thought.trim() !== '');
+					const randomThought = thoughts[Math.floor(Math.random() * thoughts.length)];
+					const thoughtElement = document.getElementById('random-quote');
+					thoughtElement.innerText = randomThought;
+				})
+				.catch(error => {
+					console.error('Error:', error);
+				});
+		});
+
+		// Capture Image
+		function captureImage() {
+			// Check if the browser supports the getUserMedia API
+			if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+				// Access the camera and prompt the user to capture an image or video
+				navigator.mediaDevices.getUserMedia({ video: true })
+					.then(function (stream) {
+						// Create a video element to display the camera stream
+						var video = document.createElement('video');
+						video.srcObject = stream;
+						video.autoplay = true;
+
+						// Append the video element to the document body
+						document.body.appendChild(video);
+
+						// Handle the captured image or video when the user clicks a capture button
+						// For example, you can use canvas to draw the image or upload it to a server
+					})
+					.catch(function (error) {
+						console.log('Error accessing the camera:', error);
+					});
+			} else {
+				console.log('getUserMedia API is not supported in this browser');
+			}
+		}
+		  </script>
+
+		  
+<script>
+	function captureImage() {
+	  // Check if the browser supports the getUserMedia API
+	  if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+		// Access the camera and prompt the user to capture an image or video
+		navigator.mediaDevices.getUserMedia({ video: true })
+		  .then(function (stream) {
+			// Create a video element to display the camera stream
+			var video = document.createElement('video');
+			video.srcObject = stream;
+			video.autoplay = true;
+  
+			// Append the video element to the document body
+			document.body.appendChild(video);
+  
+			// Handle the captured image or video when the user clicks a capture button
+			// For example, you can use canvas to draw the image or upload it to a server
+		  })
+		  .catch(function (error) {
+			console.log('Error accessing the camera:', error);
+		  });
+	  } else {
+		console.log('getUserMedia API is not supported in this browser');
+	  }
+	}
+  </script>
+		
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+			
+	</body>
+</html>
