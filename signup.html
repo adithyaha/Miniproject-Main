@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Signup</title>
+  <title>Signup Page</title>
   <style>
     body {
       display: flex;
@@ -16,19 +16,18 @@
     }
 
     .container {
-      max-width: 800px;
-      padding: 80px;
+      max-width: 400px;
+      padding: 40px;
       background-image: url('images/bg.jpg');
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      margin-top: 10px;
     }
 
     h2 {
       text-align: center;
       text-decoration: underline;
       margin-top: 0;
-      margin-bottom: 50px;
+      margin-bottom: 30px;
     }
 
     form {
@@ -44,21 +43,16 @@
     }
 
     .input-field label {
-      flex-basis: 35%;
-      text-align: right;
       margin-right: 10px;
     }
 
     .input-field input,
     .input-field select {
       flex-grow: 1;
-      padding: 8px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
     }
 
     .submit-button {
-      background-color: #675bee;
+      background-color: #4CAF50;
       color: white;
       padding: 10px 20px;
       border: none;
@@ -70,20 +64,6 @@
       color: red;
       margin-top: 10px;
       text-align: center;
-    }
-
-    .button-container {
-      display: flex;
-      justify-content: center;
-      margin-top: 30px;
-    }
-
-    .button-container form {
-      margin-right: 20px;
-    }
-
-    .button-container input[type="submit"]:last-child {
-      margin-left: 15px;
     }
   </style>
   <script>
@@ -130,17 +110,11 @@
       </div>
 
       <div class="input-field">
-        <label for="dob">Date of Birth:</label>
+        <label for="dob">dob:</label>
         <input type="date" id="dob" name="dob" required>
       </div>
 
-      <div class="button-container">
-        <form action="process_login.php" method="POST">
-          <input type="submit" value="Login" class="submit-button">
-        </form>
-
-        <input type="submit" value="Sign Up" class="submit-button">
-      </div>
+      <input type="submit" value="Sign Up" class="submit-button">
     </form>
 
     <p id="error-message" class="error-message"></p>
