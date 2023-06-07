@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Signup Page</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-image: url('images/bg-main.jpg');
+      background-size: cover;
+      background-position: center;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      max-width: 400px;
+      padding: 40px;
+      background-image: url('images/bg.jpg');
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      text-decoration: underline;
+      margin-top: 0;
+      margin-bottom: 30px;
+    }
+
+    form {
+      text-align: center;
+    }
+
+    .input-field {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .input-field label {
+      margin-right: 10px;
+    }
+
+    .input-field input,
+    .input-field select {
+      flex-grow: 1;
+    }
+
+    .submit-button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .error-message {
+      color: red;
+      margin-top: 10px;
+      text-align: center;
+    }
+  </style>
+  <script>
+    function validateForm() {
+      var password = document.getElementById("password").value;
+      var rePassword = document.getElementById("re-password").value;
+      var errorMessage = document.getElementById("error-message");
+      
+      if (password !== rePassword) {
+        errorMessage.innerHTML = "Passwords do not match.";
+        errorMessage.style.display = "block";
+        return false;
+      }
+      errorMessage.style.display = "none";
+      return true;
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h2>Signup</h2>
+    <form action="process_signup.php" method="POST" onsubmit="return validateForm();">
+      <div class="input-field">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+      </div>
+
+      <div class="input-field">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+
+      <div class="input-field">
+        <label for="re-password">Re-Password:</label>
+        <input type="password" id="re-password" name="re-password" required>
+      </div>
+
+      <div class="input-field">
+        <label for="gender">Gender:</label>
+        <select id="gender" name="gender">
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+      </div>
+
+      <div class="input-field">
+        <label for="dob">Date of Birth:</label>
+        <input type="date" id="dob" name="dob" required>
+      </div>
+
+      <input type="submit" value="Sign Up" class="submit-button">
+    </form>
+
+    <p id="error-message" class="error-message"></p>
+  </div>
+</body>
+</html>
