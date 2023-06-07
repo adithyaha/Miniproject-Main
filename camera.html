@@ -1,0 +1,96 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Camera Window</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #f5f5f5;
+        }
+
+        video {
+            max-width: 100%;
+            max-height: 70vh;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 18px;
+            background: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #message {
+            margin-top: 20px;
+            font-size: 20px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <video id="video" autoplay></video>
+    <button onclick="captureImage()">Capture</button>
+    <p id="message"></p>
+    <script>
+        let videoStream;
+        const video = document.getElementById('video');
+        const messageElement = document.getElementById('message');
+
+        function startCamera() {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(stream => {
+                    videoStream = stream;
+                    video.srcObject = stream;
+                })
+                .catch(error => {
+                    console.error('Error accessing camera:', error);
+                });
+        }
+
+        function stopCamera() {
+            if (videoStream) {
+                const tracks = videoStream.getTracks();
+                tracks.forEach(track => track.stop());
+            }
+        }
+
+        function captureImage() {
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            const imageDataURL = canvas.toDataURL();
+
+            // Send the data URL to your server for further processing and storage in the database
+            // Here, you can make an AJAX request to send the captured image data
+
+            // Show the capture message
+            messageElement.textContent = 'Your daily selfie has been captured!';
+
+            // Close the camera window after a short delay
+            setTimeout(() => {
+                window.close();
+            }, 2000);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            startCamera();
+        });
+
+        window.addEventListener('beforeunload', () => {
+            stopCamera();
+        });
+    </script>
+</body>
+</html>
