@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Signup Page</title>
+  <title>Login Page</title>
   <style>
     body {
       display: flex;
@@ -46,8 +46,7 @@
       margin-right: 10px;
     }
 
-    .input-field input,
-    .input-field select {
+    .input-field input {
       flex-grow: 1;
     }
 
@@ -68,12 +67,12 @@
   </style>
   <script>
     function validateForm() {
+      var username = document.getElementById("username").value;
       var password = document.getElementById("password").value;
-      var rePassword = document.getElementById("re-password").value;
       var errorMessage = document.getElementById("error-message");
       
-      if (password !== rePassword) {
-        errorMessage.innerHTML = "Passwords do not match.";
+      if (username === "" || password === "") {
+        errorMessage.innerHTML = "Please enter both username and password.";
         errorMessage.style.display = "block";
         return false;
       }
@@ -84,8 +83,8 @@
 </head>
 <body>
   <div class="container">
-    <h2>Signup</h2>
-    <form action="process_signup.php" method="POST" onsubmit="return validateForm();">
+    <h2>Login</h2>
+    <form action="process_login.php" method="POST" onsubmit="return validateForm();">
       <div class="input-field">
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required>
@@ -96,25 +95,7 @@
         <input type="password" id="password" name="password" required>
       </div>
 
-      <div class="input-field">
-        <label for="re-password">Re-Password:</label>
-        <input type="password" id="re-password" name="re-password" required>
-      </div>
-
-      <div class="input-field">
-        <label for="gender">Gender:</label>
-        <select id="gender" name="gender">
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-        </select>
-      </div>
-
-      <div class="input-field">
-        <label for="dob">dob:</label>
-        <input type="date" id="dob" name="dob" required>
-      </div>
-
-      <input type="submit" value="Sign Up" class="submit-button">
+      <input type="submit" value="Login" class="submit-button">
     </form>
 
     <p id="error-message" class="error-message"></p>
