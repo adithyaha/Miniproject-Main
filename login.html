@@ -67,35 +67,54 @@
       text-align: center;
     }
   </style>
- <script>
-  function redirectToIndex() {
-    var username = document.getElementById("username").value;
-    var password = document.getElementById("password").value;
-    
-    if (username !== "" && password !== "") {
-      window.location.href = "index.html";
+  
+  <script>
+    function validateLogin() {
+      var username = document.getElementById("username").value;
+      var password = document.getElementById("password").value;
+      if (username !== "" && password !== "") {
+        // Form is valid, submit the form
+        document.getElementById("login-form").submit();
+      } else {
+        // Display error message
+        document.getElementById("error-message").textContent = "Invalid username or password.";
+      }
     }
-  }
-</script>
+
+    
+    var username = sessionStorage.getItem("username");
+    var script = document.createElement('script');
+    script.src = "cam.py?username=" + username;
+    document.head.appendChild(script);
+
+    
+  </script>
 </head>
+
+
+
 <body>
-<div class="container">
-  <h2>Login</h2>
-  <form action="process_login.php" method="POST" onsubmit="return false;">
-    <div class="input-field">
-      <label for="username">Username:</label>
-      <input type="text" id="username" name="username" required>
-    </div>
 
-    <div class="input-field">
-      <label for="password">Password:</label>
-      <input type="password" id="password" name="password" required>
-    </div>
 
-    <input type="submit" value="Login" class="submit-button" onclick="redirectToIndex();">
-  </form>
+  <div class="container">
+    <h2>Login</h2>
+    <form id="login-form" action="process_login.php" method="POST">
+      <div class="input-field">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+      </div>
 
-  <p id="error-message" class="error-message"></p>
-</div>
+      <div class="input-field">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+
+      <input type="button" value="Login" class="submit-button" onclick="validateLogin();">
+    </form>
+
+    <p id="error-message" class="error-message"></p>
+  </div>
 </body>
+
+
 </html>

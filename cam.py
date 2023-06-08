@@ -1,14 +1,18 @@
+import sys 
 import tensorflow as tf
 from tensorflow.keras.preprocessing.image import img_to_array
 import cv2
 import numpy as np
 
-face_classifier = cv2.CascadeClassifier(r'D:\Data\Desktop\Emotion_Detection_CNN-main\haarcascade_frontalface_default.xml')
-classifier = tf.keras.models.load_model(r'D:\Data\Desktop\Emotion_Detection_CNN-main\model.h5')
+face_classifier = cv2.CascadeClassifier(r'C:/xampp\htdocs\Miniproject-Main\haarcascade_frontalface_default.xml')
+classifier = tf.keras.models.load_model(r'C:\xampp\htdocs\Miniproject-Main\model.h5')
 
 emotion_labels = ['Angry', 'Disgust', 'Fear', 'Happy', 'Neutral', 'Sad', 'Surprise']
 
-image_path = 'D:/Data/Pictures/Camera Roll/happy (2).jpg'  # Provide the path to the image file
+
+username = sys.argv[1]
+
+image_path = 'C:/Users/afeef/Pictures/Camera Roll/WIN_20230304_14_54_50_Pro.jpg'  # Provide the path to the image file
 
 # Load and preprocess the image
 image = cv2.imread(image_path)
