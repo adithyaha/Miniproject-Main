@@ -2,7 +2,7 @@
 // Establish a connection to the MySQL database
 $servername = "localhost"; // Replace with your MySQL server name if different
 $username = "afeef"; // Use the username you created
-$password = "123"; // Use the passsword you set for the user
+$password = "123"; // Use the password you set for the user
 $dbname = "miniproject"; // Replace with your MySQL database name
 
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -26,14 +26,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $ageTimestamp = $nowTimestamp - $dobTimestamp;
     $age = floor($ageTimestamp / (365 * 24 * 60 * 60));
 
-    // Insert the data into the database
-    $sql = "INSERT INTO users (username, password, gender, dob, age) VALUES ('$username', '$password', '$gender', '$dob', $age)";
-    if ($conn->query($sql) === TRUE) {
-        echo "User created successfully.";
-        header("Location: login.html");
-        exit();
+    // Check if the user already exists in the users table
+    $checkUserQuery = "SELECT * FROM users WHERE username = '$username'";
+    $checkUserResult = $conn->query($checkUserQuery);
+
+    if ($checkUserResult->num_rows > 0) {
+        echo "Error: User already exists.";
     } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        // Insert the data into the users table
+        $insertUserQuery = "INSERT INTO users (username, password, gender, dob, age) VALUES ('$username', '$password', '$gender', '$dob', $age)";
+
+        if ($conn->query($insertUserQuery) === TRUE) {
+            echo "User created successfully.";
+            header("Location: login.html");
+            exit();
+        } else {
+            echo "Error: " . $insertUserQuery . "<br>" . $conn->error;
+        }
+
+        // Create a new table for the user
+        $createTableQuery = "CREATE TABLE IF NOT EXISTS {$username}_table (
+            id INT(11) AUTO_INCREMENT PRIMARY KEY,
+            username VARCHAR(50) NOT NULL,
+            date DATE,
+            emotion VARCHAR(50),
+            notes TEXT,
+            privatenotes TEXT,
+            FOREIGN KEY (username) REFERENCES users(username)
+        )";
+
+        if ($conn->query($createTableQuery) === TRUE) {
+            echo "User table created successfully.";
+        } else {
+            echo "Error creating user table: " . $conn->error;
+        }
     }
 }
 

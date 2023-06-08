@@ -10,9 +10,9 @@ classifier = tf.keras.models.load_model(r'C:\xampp\htdocs\Miniproject-Main\model
 emotion_labels = ['Angry', 'Disgust', 'Fear', 'Happy', 'Neutral', 'Sad', 'Surprise']
 
 
-username = sys.argv[1]
+# username = sys.argv[1]
 
-image_path = 'C:/Users/afeef/Pictures/Camera Roll/WIN_20230304_14_54_50_Pro.jpg'  # Provide the path to the image file
+image_path = 'files/todays_selfie.jpg'  # Provide the path to the image file
 
 # Load and preprocess the image
 image = cv2.imread(image_path)

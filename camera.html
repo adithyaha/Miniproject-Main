@@ -40,6 +40,7 @@
     <video id="video" autoplay></video>
     <button onclick="captureImage()">Capture</button>
     <p id="message"></p>
+    <img id="capturedImage" src="#" alt="Captured Photo" style="display: none;">
     <script>
         let videoStream;
         const video = document.getElementById('video');
@@ -72,16 +73,29 @@
 
             const imageDataURL = canvas.toDataURL();
 
-            // Send the data URL to your server for further processing and storage in the database
-            // Here, you can make an AJAX request to send the captured image data
+            // Display the captured image
+            const capturedImage = document.getElementById('capturedImage');
+            capturedImage.src = imageDataURL;
+            capturedImage.style.display = 'block';
 
+            // Send the data URL to the server for saving
+const xhr = new XMLHttpRequest();
+xhr.open('POST', 'save_image.php', true);
+xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+xhr.onreadystatechange = function () {
+    if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.status === 200) {
             // Show the capture message
             messageElement.textContent = 'Your daily selfie has been captured!';
+        } else {
+            // Show an error message
+            messageElement.textContent = 'Failed to capture the image.';
+        }
+    }
+};
 
-            // Close the camera window after a short delay
-            setTimeout(() => {
-                window.close();
-            }, 2000);
+const data = 'imageData=' + encodeURIComponent(imageDataURL);
+xhr.send(data);
         }
 
         window.addEventListener('DOMContentLoaded', () => {
