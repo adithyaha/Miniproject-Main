@@ -19,6 +19,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST["password"];
     $gender = $_POST["gender"];
     $dob = $_POST["dob"];
+    $dateOfEntry = date("Y-m-d"); // Get the current date
+
+    // Additional attributes
+    $emotion = ""; // Empty for now
+    $notes = ""; // Empty for now
 
     // Calculate age from the date of birth
     $dobTimestamp = strtotime($dob);
@@ -57,6 +62,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($conn->query($createTableQuery) === TRUE) {
             echo "User table created successfully.";
+
+            // Insert initial data into the user's table using prepared statement
+            $insertDataQuery = "INSERT INTO {$username}_table (username, date, emotion, notes, privatenotes) VALUES (?, ?, ?, ?, '')";
+
+            $stmt = $conn->prepare($insertDataQuery);
+            $stmt->bind_param("ssss", $username, $dateOfEntry, $emotion, $notes);
+
+            if ($stmt->execute() === TRUE) {
+                echo "Initial data inserted successfully.";
+            } else {
+                echo "Error inserting initial data: " . $stmt->error;
+            }
+
+            $stmt->close();
         } else {
             echo "Error creating user table: " . $conn->error;
         }

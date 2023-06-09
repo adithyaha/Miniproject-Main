@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="assets/css/main.css" />
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-    
 </head>
 <body class="is-preload">
 
@@ -16,7 +15,7 @@
     <!-- Header -->
     <header id="header">
         <button class="logo" onclick="openCameraWindow()">
-            <img class="icon" src="images/camera.svg" alt="Camera Icon"></img>
+            <img class="icon" src="images/camera.svg" alt="Camera Icon" />
         </button>
         <div class="content">
             <div class="inner">
@@ -40,6 +39,7 @@
         <!-- for you -->
         <article id="for-you">
             <h2 class="major">For You :)</h2>
+            <button id="recommendationsButton" onclick="runCamScript()">Give my recommendations!!</button>
             <p>Your recommendations would appear here!!</p>
         </article>
 
@@ -119,6 +119,12 @@
 <div id="bg"></div>
 
 <!-- Scripts -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/browser.min.js"></script>
+<script src="assets/js/breakpoints.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+
 <script>
     // Random Thought
     window.addEventListener('DOMContentLoaded', () => {
@@ -149,33 +155,42 @@
         }
     }
 
-// Save Notes to File
-document.getElementById('notesForm').addEventListener('submit', function (event) {
-    event.preventDefault();
+    // Run cam.py script
+    function runCamScript() {
+        // Create AJAX request
+        $.ajax({
+            type: 'POST',
+            url: 'run_script.php', // Replace with the appropriate URL
+            success: function (response) {
+                // Process the response or update the UI as needed
+                console.log('cam.py script executed successfully');
+            },
+            error: function (error) {
+                console.error('Error:', error);
+            }
+        });
+    }
 
-    const message = document.getElementById('message').value;
-    const privateNotes = document.getElementById('privateNotes').value;
-    const content = `Message: ${message}\nPrivate Notes: ${privateNotes}`;
+    // Save Notes to File
+    document.getElementById('notesForm').addEventListener('submit', function (event) {
+        event.preventDefault();
 
-    // Create AJAX request
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', 'savefile.php', true);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            console.log('File saved successfully');
-        }
-    };
-    xhr.send(`content=${encodeURIComponent(content)}&filename=enteredtext.txt`);
-});
+        const message = document.getElementById('message').value;
+        const privateNotes = document.getElementById('privateNotes').value;
+        const content = `Message: ${message}\nPrivate Notes: ${privateNotes}`;
 
+        // Create AJAX request
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'savefile.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                console.log('File saved successfully');
+            }
+        };
+        xhr.send(`content=${encodeURIComponent(content)}&filename=enteredtext.txt`);
+    });
 </script>
-
-<script src="assets/js/jquery.min.js"></script>
-<script src="assets/js/browser.min.js"></script>
-<script src="assets/js/breakpoints.min.js"></script>
-<script src="assets/js/util.js"></script>
-<script src="assets/js/main.js"></script>
 
 </body>
 </html>
