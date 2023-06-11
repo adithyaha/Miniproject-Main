@@ -10,6 +10,13 @@ import os
 import base64
 import tensorflow as tf
 from flask import jsonify,make_response
+from flask import Flask, request, jsonify
+import nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize, sent_tokenize
+
+nltk.download('stopwords')
+nltk.download('punkt')
 
 app = Flask(__name__, static_url_path='/static')
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
@@ -177,7 +184,7 @@ def run_model_on_image(image_path):
 
 @app.route('/')
 def index():
-    return redirect('/login')
+    return redirect('/signup')
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -293,6 +300,79 @@ def recommendation():
         return response
     else:
         return jsonify(error='User not logged in')
+
+
+@app.route('/notes', methods=['POST'])
+def summarize_notes():
+    # Get the text from the form field
+    text = request.form.get('message')
+
+    # Tokenizing the text
+    stopWords = set(stopwords.words("english"))
+    words = word_tokenize(text)
+
+    # Creating a frequency table to keep the score of each word
+    freqTable = dict()
+    for word in words:
+        word = word.lower()
+        if word in stopWords:
+            continue
+        if word in freqTable:
+            freqTable[word] += 1
+        else:
+            freqTable[word] = 1
+
+    # Creating a dictionary to keep the score of each sentence
+    sentences = sent_tokenize(text)
+    sentenceValue = dict()
+
+    for sentence in sentences:
+        for word, freq in freqTable.items():
+            if word in sentence.lower():
+                if sentence in sentenceValue:
+                    sentenceValue[sentence] += freq
+                else:
+                    sentenceValue[sentence] = freq
+
+    sumValues = 0
+    for sentence in sentenceValue:
+        sumValues += sentenceValue[sentence]
+
+    # Average value of a sentence from the original text
+    average = int(sumValues / len(sentenceValue))
+
+    # Storing sentences into our summary.
+    summary = ''
+    for sentence in sentences:
+        if (sentence in sentenceValue) and (sentenceValue[sentence] > (1.5 * average)):
+            summary += " " + sentence
+
+    # Return the summary as a JSON response
+    return jsonify({'summary': summary})
+
+
+@app.route('/track')
+def track_entries():
+    username = session.get('username')
+    if username:
+        conn = mysql.connector.connect(**db_config)
+        cursor = conn.cursor()
+
+        # Fetch the last five entries for the user
+        cursor.execute(f"SELECT * FROM {username} ORDER BY id DESC LIMIT 5")
+        user_entries = cursor.fetchall()
+
+        # Prepare the HTML for the entries
+        entries_html = "".join(f"<li>{entry[2]}</li>" for entry in user_entries)
+
+        cursor.close()
+        conn.close()
+        print(entries_html)
+        # Return the entries as a JSON response
+        return jsonify(entries=entries_html)
+    else:
+        return jsonify(error='User not logged in')
+
 
 @app.route('/index')
 def main():

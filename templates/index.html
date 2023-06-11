@@ -9,19 +9,139 @@
     <script>
         // Make an AJAX request to the Flask route
         function runRecommendScript() {
-  fetch('/recommend')
-    .then(response => response.json())
-    .then(data => {
-      // Update the content of the recommendationDiv with the recommendation result
-      const recommendationDiv = document.getElementById('recommendationDiv');
-      recommendationDiv.innerHTML = data.recommendation;
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    });
+          // Update the content of the recommendationDiv with a loading message
+          const recommendationDiv = document.getElementById('recommendationDiv');
+          recommendationDiv.innerHTML = "Loading...";
+
+          fetch('/recommend')
+            .then(response => response.json())
+            .then(data => {
+              // Update the content of the recommendationDiv with the recommendation result
+              recommendationDiv.innerHTML = data.recommendation;
+            })
+            .catch(error => {
+              console.error('Error:', error);
+              // Update the content of the recommendationDiv with an error message
+              recommendationDiv.innerHTML = "Error occurred while fetching recommendation.";
+            });
+        }
+
+
+              // Add an event listener to run the recommend script when the for-you article is visible
+              document.addEventListener('DOMContentLoaded', function() {
+          const forYouArticle = document.getElementById('for-you');
+          const options = {
+            rootMargin: '0px',
+            threshold: 0.1
+          };
+
+          const observer = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                runRecommendScript();
+                observer.unobserve(entry.target);
+              }
+            });
+          }, options);
+
+          observer.observe(forYouArticle);
+        });
+
+
+
+
+        // Make an AJAX request to the Flask route to summarize the notes
+        function summarizeNotes() {
+        // Update the content of the summaryDiv with a loading message
+        const summaryDiv = document.getElementById('summaryDiv');
+        summaryDiv.innerHTML = "Loading...";
+
+        const formData = new FormData(document.getElementById('notesForm'));
+
+        fetch('/notes', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+            // Update the content of the summaryDiv with the summary result
+            summaryDiv.innerHTML = data.summary;
+            })
+            .catch(error => {
+            console.error('Error:', error);
+            // Update the content of the summaryDiv with an error message
+            summaryDiv.innerHTML = "Error occurred while summarizing notes.";
+            });
+        }
+
+        // Add an event listener to the summarize button
+        const summarizeButton = document.getElementById('summarizeButton');
+        summarizeButton.addEventListener('click', summarizeNotes);
+
+                // Fetch and display the last five entries for the current user
+                function trackProgress() {
+            // Update the content of the trackOverlayDiv with a loading message
+            const trackOverlayDiv = document.getElementById('trackOverlayDiv');
+            trackOverlayDiv.innerHTML = "Loading...";
+
+            fetch('/track')
+                .then(response => response.json())
+                .then(data => {
+                    // Update the content of the trackOverlayDiv with the user's entries
+                    trackOverlayDiv.innerHTML = '';
+                    data.entries.forEach(entry => {
+                        const entryDiv = document.createElement('div');
+                        entryDiv.textContent = entry;
+                        trackOverlayDiv.appendChild(entryDiv);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Update the content of the trackOverlayDiv with an error message
+                    trackOverlayDiv.innerHTML = "Error occurred while fetching entries.";
+                });
+        }
+        // Fetch and display the last five entries for the current user
+function trackProgress() {
+    // Update the content of the trackOverlayDiv with a loading message
+    const trackOverlayDiv = document.getElementById('trackOverlayDiv');
+    trackOverlayDiv.innerHTML = "Loading...";
+
+    fetch('/track')
+        .then(response => response.json())
+        .then(data => {
+            // Update the content of the trackOverlayDiv with the user's entries
+            trackOverlayDiv.innerHTML = '';
+            data.entries.forEach(entry => {
+                const entryDiv = document.createElement('div');
+                entryDiv.textContent = entry;
+                trackOverlayDiv.appendChild(entryDiv);
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Update the content of the trackOverlayDiv with an error message
+            trackOverlayDiv.innerHTML = "Error occurred while fetching entries.";
+        });
 }
 
-      </script>
+// Add an event listener to track article
+document.getElementById('trackArticle').addEventListener('click', function(event) {
+    event.preventDefault();
+    // Show the track overlay
+    document.getElementById('trackOverlay').classList.add('visible');
+    // Fetch and display the last five entries for the current user
+    trackProgress();
+});
+
+// Close the track overlay
+document.getElementById('closeTrackOverlay').addEventListener('click', function(event) {
+    event.preventDefault();
+    document.getElementById('trackOverlay').classList.remove('visible');
+});
+
+  
+    </script>
 </head>
 <body class="is-preload">
 
@@ -53,7 +173,7 @@
     <div id="main">
 
         <!-- for you -->
-        <article id="for-you" onclick="runRecommendScript()">
+        <article id="for-you">
             <h2 class="major">For You :)</h2>
             <div id="recommendationDiv">
                  <!-- Content generated by recommend.py will be displayed here -->
@@ -62,36 +182,44 @@
             
         </article>
 
-        <!-- notes -->
+        <!-- notes -->    
         <article id="notes">
-            <h2 class="major">Notes</h2>
-            <form id="notesForm" method="post" action="#">
-                <div class="fields">
-                    <div class="field">
-                        <label for="message">Put your thoughts down!</label>
-                        <textarea name="message" id="message" rows="4"></textarea>
-                    </div>
-
-                    <div class="field">
-                        <label for="privateNotes">Enter Your Private Notes Here:</label>
-                        <textarea name="privateNotes" id="privateNotes" rows="4"></textarea>
-                    </div>
+        <h2 class="major">Notes</h2>
+        <form id="notesForm" method="post" action="/notes">
+            <div class="fields">
+                <div class="field">
+                    <label for="message">Put your thoughts down!</label>
+                    <textarea name="message" id="message" rows="4"></textarea>
                 </div>
 
-                <ul class="actions">
-                    <li><input type="submit" value="Summarize" class="primary" /></li>
-                    <li><input type="reset" value="start Date" /></li>
-                </ul>
-            </form>
-        </article>
+                <div class="field">
+                    <label>Summary:</label>
+                    <div id="summaryDiv"></div>
+                </div>
+            </div>
+
+            <ul class="actions">
+                <li><input type="submit" value="Summarize" class="primary" id="summarizeButton" /></li>
+            </ul>
+        </form>
+    </article>
 
         <!-- Track -->
         <article id="track">
             <h2 class="major">Track</h2>
-            <span class="image main"><img src="/static/images/pic03.jpg" alt="" /></span>
-            <p>Lorem ipsum dolor sit amet, consectetur et adipiscing elit. Praesent eleifend dignissim arcu, at eleifend sapien imperdiet ac. Aliquam erat volutpat. Praesent urna nisi, fringila lorem et vehicula lacinia quam. Integer sollicitudin mauris nec lorem luctus ultrices. Aliquam libero et malesuada fames ac ante ipsum primis in faucibus. Cras viverra ligula sit amet ex mollis mattis lorem ipsum dolor sit amet.</p>
+            <!-- Overlay -->
+            <div id="trackOverlay">
+                <div class="inner">
+                    <h3>Last Five Entries</h3>
+                    <div id="trackOverlayDiv">
+                        <!-- Entries fetched from the user table will be displayed here -->
+                    </div>
+                    <ul class="actions">
+                        <li><a href="#" class="button primary" id="closeTrackOverlay">Close</a></li>
+                    </ul>
+                </div>
+            </div>
         </article>
-
         <!-- Contact -->
         <article id="contact">
             <h2 class="major">Contact</h2>
@@ -184,25 +312,11 @@
         });
     }
 
-    // Save Notes to File
-    document.getElementById('notesForm').addEventListener('submit', function (event) {
-        event.preventDefault();
 
-        const message = document.getElementById('message').value;
-        const privateNotes = document.getElementById('privateNotes').value;
-        const content = `Message: ${message}\nPrivate Notes: ${privateNotes}`;
+    
 
-        // Create AJAX request
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'savefile.php', true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                console.log('File saved successfully');
-            }
-        };
-        xhr.send(`content=${encodeURIComponent(content)}&filename=enteredtext.txt`);
-    });
+
+
 </script>
 
 
