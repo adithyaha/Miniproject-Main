@@ -9,6 +9,7 @@ import tensorflow as tf
 from tensorflow.keras.preprocessing.image import img_to_array
 import cv2
 import numpy as np
+import subprocess
 
 app = Flask(__name__, static_url_path='/static')
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
@@ -21,6 +22,19 @@ db_config = {
     'database': 'mydatabase'
 }
 
+
+def run_recommend_script(username):
+    subprocess.Popen([sys.executable, 'static/recommend.py', username])
+
+
+@app.route('/recommend')
+def recommend():
+    username = session.get('username')
+    if username:
+        run_recommend_script(username)
+        return 'recommend.py script executed'
+    else:
+        return 'User session not found.'
 
 
 
@@ -63,6 +77,7 @@ def run_model_on_image(image_path):
         cursor.close()
         conn.close()
 
+        run_recommend_script(username)
 
 @app.route('/')
 def index():
@@ -153,6 +168,11 @@ def save_image():
 
     image_path = os.path.join(app.root_path, 'static', 'todays_selfie.jpg')
 
+    
+    conn = mysql.connector.connect(**db_config)
+    cursor = conn.cursor()
+
+    
     # Delete the existing file if it exists
     if os.path.exists(image_path):
         os.remove(image_path)
@@ -162,7 +182,12 @@ def save_image():
 
     run_model_on_image(image_path)  # Run the model on the saved image
 
+    cursor.close()
+    conn.close()
+
     return 'Image saved on the server.'
+
+
 
 @app.route('/index')
 def main():
