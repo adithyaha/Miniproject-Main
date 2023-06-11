@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-image: url('../static/images/bluredbg.jpg');
+      background-size: cover;
+      background-position: center;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      max-width: 400px;
+      padding: 40px;
+      background-image: url('../static/images/bg.jpg');
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      text-decoration: underline;
+      margin-top: 0;
+      margin-bottom: 30px;
+    }
+
+    form {
+      text-align: center;
+    }
+
+    .input-field {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .input-field label {
+      flex-basis: 35%;
+      text-align: right;
+      margin-right: 10px;
+    }
+
+    .input-field input {
+      flex-grow: 1;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+
+    .submit-button {
+      background-color: #675bee;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .error-message {
+      color: red;
+      margin-top: 10px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h2>Login</h2>
+  <form action="/login" method="POST">
+    <div class="input-field">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" required>
+    </div>
+
+    <div class="input-field">
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+    </div>
+
+    <input type="submit" value="Login" class="submit-button">
+    <p class="error-message">{{ error_message }}</p>
+  </form>
+</div>
+</body>
+</html>

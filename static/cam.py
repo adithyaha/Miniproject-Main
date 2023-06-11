@@ -4,8 +4,8 @@ from tensorflow.keras.preprocessing.image import img_to_array
 import cv2
 import numpy as np
 
-face_classifier = cv2.CascadeClassifier(r'C:/xampp\htdocs\Miniproject-Main\haarcascade_frontalface_default.xml')
-classifier = tf.keras.models.load_model(r'C:\xampp\htdocs\Miniproject-Main\model.h5')
+face_classifier = cv2.CascadeClassifier(r'static\todays_selfie.jpg')
+classifier = tf.keras.models.load_model(r'static\model.h5')
 
 emotion_labels = ['Angry', 'Disgust', 'Fear', 'Happy', 'Neutral', 'Sad', 'Surprise']
 

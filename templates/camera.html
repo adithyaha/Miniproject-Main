@@ -73,29 +73,49 @@
 
             const imageDataURL = canvas.toDataURL();
 
-            // Display the captured image
-            const capturedImage = document.getElementById('capturedImage');
-            capturedImage.src = imageDataURL;
-            capturedImage.style.display = 'block';
+            // Create a link element to download the image
+            const link = document.createElement('a');
+            link.href = imageDataURL;
+            link.download = 'todays_selfie.jpg';
+            link.style.display = 'none';
+            document.body.appendChild(link);
 
-            // Send the data URL to the server for saving
-const xhr = new XMLHttpRequest();
-xhr.open('POST', 'save_image.php', true);
-xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-xhr.onreadystatechange = function () {
-    if (xhr.readyState === XMLHttpRequest.DONE) {
-        if (xhr.status === 200) {
+            // Trigger the download
+            link.click();
+
             // Show the capture message
             messageElement.textContent = 'Your daily selfie has been captured!';
-        } else {
-            // Show an error message
-            messageElement.textContent = 'Failed to capture the image.';
-        }
-    }
-};
 
-const data = 'imageData=' + encodeURIComponent(imageDataURL);
-xhr.send(data);
+            // Send the image data to the server for saving
+            fetch('/save_image', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ imageDataURL })
+            })
+                .then(response => {
+                    if (response.ok) {
+                        // Image saved successfully
+                        console.log('Image saved on the server.');
+                    } else {
+                        // Error saving the image
+                        console.error('Failed to save the image on the server.');
+                    }
+
+                    // Close the camera window after a short delay
+                    setTimeout(() => {
+                        window.close();
+                    }, 3000);
+                })
+                .catch(error => {
+                    console.error('An error occurred while saving the image:', error);
+
+                    // Close the camera window after a short delay
+                    setTimeout(() => {
+                        window.close();
+                    }, 3000);
+                });
         }
 
         window.addEventListener('DOMContentLoaded', () => {

@@ -4,8 +4,8 @@
     <title>Mental Health Management</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <link rel="stylesheet" href="assets/css/main.css" />
-    <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+    <link rel="stylesheet" href="../static/css/main.css" />
+    <noscript><link rel="stylesheet" href="../static/css/noscript.css" /></noscript>
 </head>
 <body class="is-preload">
 
@@ -15,7 +15,7 @@
     <!-- Header -->
     <header id="header">
         <button class="logo" onclick="openCameraWindow()">
-            <img class="icon" src="images/camera.svg" alt="Camera Icon" />
+            <img class="icon" src="/static/images/camera.svg" alt="Camera Icon" />
         </button>
         <div class="content">
             <div class="inner">
@@ -69,7 +69,7 @@
         <!-- Track -->
         <article id="track">
             <h2 class="major">Track</h2>
-            <span class="image main"><img src="images/pic03.jpg" alt="" /></span>
+            <span class="image main"><img src="/static/images/pic03.jpg" alt="" /></span>
             <p>Lorem ipsum dolor sit amet, consectetur et adipiscing elit. Praesent eleifend dignissim arcu, at eleifend sapien imperdiet ac. Aliquam erat volutpat. Praesent urna nisi, fringila lorem et vehicula lacinia quam. Integer sollicitudin mauris nec lorem luctus ultrices. Aliquam libero et malesuada fames ac ante ipsum primis in faucibus. Cras viverra ligula sit amet ex mollis mattis lorem ipsum dolor sit amet.</p>
         </article>
 
@@ -107,47 +107,41 @@
 
 </div>
 
-<!-- camera modal  -->
-<div id="cameraModal" class="modal">
-    <div class="modal-content">
-        <video id="video" autoplay></video>
-        <button id="captureButton" onclick="captureImage()">Capture</button>
-    </div>
-</div>
 
 <!-- BG -->
 <div id="bg"></div>
 
 <!-- Scripts -->
-<script src="assets/js/jquery.min.js"></script>
-<script src="assets/js/browser.min.js"></script>
-<script src="assets/js/breakpoints.min.js"></script>
-<script src="assets/js/util.js"></script>
-<script src="assets/js/main.js"></script>
+<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/browser.min.js"></script>
+<script src="/static/js/breakpoints.min.js"></script>
+<script src="/static/js/util.js"></script>
+<script src="../static/js/main.js"></script>
 
 <script>
     // Random Thought
     window.addEventListener('DOMContentLoaded', () => {
-        fetch("quotes/quotes.txt")
-            .then(response => response.text())
-            .then(data => {
-                const thoughts = data.split('\n').filter(thought => thought.trim() !== '');
-                const randomThought = thoughts[Math.floor(Math.random() * thoughts.length)];
-                const thoughtElement = document.getElementById('random-quote');
-                thoughtElement.innerText = randomThought;
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-    });
+    fetch("/static/quotes.txt")
+        .then(response => response.text())
+        .then(data => {
+            const thoughts = data.split('\n').filter(thought => thought.trim() !== '');
+            const randomThought = thoughts[Math.floor(Math.random() * thoughts.length)];
+            const thoughtElement = document.getElementById('random-quote');
+            thoughtElement.innerText = randomThought;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+});
 
     // Camera Window
     let cameraWindow;
 
     function openCameraWindow() {
-        const cameraUrl = 'camera.html'; // URL of the camera window HTML file
-        cameraWindow = window.open(cameraUrl, '_blank', 'width=500,height=500');
-    }
+    const cameraUrl = '/camera'; // Update the URL to camera.html
+    cameraWindow = window.open(cameraUrl, '_blank', 'width=500,height=500');
+}
+
 
     function closeCameraWindow() {
         if (cameraWindow) {

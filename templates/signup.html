@@ -9,7 +9,7 @@
       align-items: center;
       height: 100vh;
       margin: 0;
-      background-image: url('images/bluredbg.jpg');
+      background-image: url('../static/images/bluredbg.jpg');
       background-size: cover;
       background-position: center;
       font-family: Arial, sans-serif;
@@ -18,7 +18,7 @@
     .container {
       max-width: 800px;
       padding: 80px;
-      background-image: url('images/bg.jpg');
+      background-image: url('../static/images/bg.jpg');
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       margin-top: 10px;
@@ -64,6 +64,7 @@
       border: none;
       border-radius: 4px;
       cursor: pointer;
+      margin-right: 10px;
     }
 
     .error-message {
@@ -80,10 +81,6 @@
 
     .button-container form {
       margin-right: 20px;
-    }
-
-    .button-container input[type="submit"]:last-child {
-      margin-left: 15px;
     }
   </style>
 <script>
@@ -102,54 +99,49 @@
   }
 
   function redirectToLogin() {
-    window.location.href = "login.html";
+    window.location.href = '/login';
   }
 </script> 
 </head>
 <body>
 <div class="container">
   <h2>Signup</h2>
-  <form action="connect.php" method="POST">
-
+  <form action="/signup" method="POST">
     <div class="input-field">
-      <label for="username">Username:</label>
-      <input type="text" id="username" name="username" required  name="username"/>
-    </div>
-
-    <div class="input-field">
-      <label for="password">Password:</label>
-      <input type="password" id="password" name="password" required  name = "password"/>
-    </div>
-
-    <div class="input-field">
-      <label for="re-password">Re-Password:</label>
-      <input type="password" id="re-password" name="re-password"/>
-    </div>
-
-    <div class="input-field">
-      <label for="gender">Gender:</label>
-      <div id="gender">
-        <label>
-          <input type="radio" name="gender" value="male" required> Male
-        </label>
-        <label>
-          <input type="radio" name="gender" value="female"> Female
-        </label>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
       </div>
-    </div>
-
-    <div class="input-field">
-      <label for="dob">Date of Birth:</label>
-      <input type="date" id="dob" name="dob" required>
-    </div>
-
-    <div class="button-container">
-      <a href="login.html" class="submit-button">Login</a>
-      <input type="submit" value="Sign Up" class="submit-button" onclick="return validateForm();">
-    </div>
+  
+      <div class="input-field">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+  
+      <div class="input-field">
+        <label for="re-password">Re-Password:</label>
+        <input type="password" id="re-password" name="re-password">
+      </div>
+  
+      <div class="input-field">
+        <label for="gender">Gender:</label>
+        <select id="gender" name="gender" required>
+          <option value="">Select Gender</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
+      </div>
+  
+      <div class="input-field">
+        <label for="dob">Date of Birth:</label>
+        <input type="date" id="dob" name="dob" required>
+      </div>
+  
+      <div class="button-container">
+        <input type="submit" value="Sign Up" class="submit-button" onclick="return validateForm()">
+        <input type="button" value="Login" class="submit-button" onclick="redirectToLogin()">
+      </div>
   </form>
-
-  <p id="error-message" class="error-message"></p>
+  <p class="error-message" id="error-message"></p>
 </div>
 </body>
 </html>
