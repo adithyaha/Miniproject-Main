@@ -4,15 +4,11 @@ from tensorflow.keras.preprocessing.image import img_to_array
 import cv2
 import numpy as np
 
-face_classifier = cv2.CascadeClassifier(r'static\todays_selfie.jpg')
-classifier = tf.keras.models.load_model(r'static\model.h5')
+classifier = tf.keras.models.load_model('static/model.h5')
 
 emotion_labels = ['Angry', 'Disgust', 'Fear', 'Happy', 'Neutral', 'Sad', 'Surprise']
 
-
-# username = sys.argv[1]
-
-image_path = 'files/todays_selfie.jpg'  # Provide the path to the image file
+image_path = 'static/todays_selfie.jpg'  # Provide the path to the image file
 
 # Load and preprocess the image
 image = cv2.imread(image_path)
@@ -28,11 +24,7 @@ roi = np.expand_dims(roi, axis=0)
 prediction = classifier.predict(roi)
 label = emotion_labels[np.argmax(prediction)]
 
-# Display the predicted label
-print("Predicted Emotion:", label)
-
-# Display the image with the predicted label
-cv2.putText(image, label, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-cv2.imshow('Emotion Detector', image)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+# Save the predicted emotion to a file
+emotion_file_path = 'static/emotion.txt'
+with open(emotion_file_path, 'w') as file:
+    file.write(label)
